@@ -17,26 +17,6 @@ public class Album extends Midia {
         this.codigo = codigo;
     }
 
-    public static Album fromTxt(String registro){
-        String[] partes = registro.split(";");
-        if (partes.length < 7){
-        throw new IllegalArgumentException("Registro inválido: " + registro);
-        }
-        return new Album(
-            partes[0],
-            partes[1],
-            partes[2],
-            Integer.parseInt(partes[3]),
-            partes[4],
-            partes[5],
-            partes[6]
-        );
-    }
-
-    @Override
-    public String toTxt(){
-        return codigo + ";" + getTitulo() + ";" + getArtista() + ";" + getAno() + ";" + getGenero() + ";" + getLink() + ";" + getDescricao();
-    }
 
     @Override
     public String toString(){
