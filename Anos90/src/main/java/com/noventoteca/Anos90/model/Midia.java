@@ -1,66 +1,82 @@
 package com.noventoteca.Anos90.model;
 
-public abstract class Midia {
-    private String titulo;
-    private String artista;
-    private int ano;
-    private String genero;
-    private String link;
-    private String descricao;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Midia(String titulo, String artista, int ano, String genero, String link, String descricao){
-        this.titulo = titulo;
-        this.artista = artista;
-        this.ano = ano;
-        this.genero = genero;
-        this.link = link;
-        this.descricao = descricao;
-    }
+public class Usuario {
+    private String id;
+    private String nome;
+    private String email;
+    private String senha;
+    private List<String> favoritos;
 
-    public String getTitulo(){
-        return titulo;
-    }
-    public void setTitulo(String titulo){
-        this.titulo = titulo;
+    public Usuario(String id, String nome, String email, String senha){
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.favoritos = new ArrayList<>();
     }
 
-    public String getArtista(){
-        return artista;
-    }
-    public void setArtista(String artista){
-        this.artista = artista;
+    public String getId(){
+        return id;
     }
 
-    public int getAno(){
-        return ano;
-    }
-    public void setAno(int ano){
-        this.ano = ano;
+    public void setId(String id){
+        this.id = id;
     }
 
-    public String getGenero(){
-        return genero;
-    }
-    public void setGenero(String genero){
-        this.genero = genero;
+    public String getNome(){
+        return nome;
     }
 
-    public String getLink(){
-        return link;
-    }
-    public void setLink(String link){
-        this.link = link;
+    public void setNome(String nome){
+        this.nome = nome;
     }
 
-    public String getDescricao(){
-        return descricao;
+    public String getEmail(){
+        return email;
     }
-    public void setDescricao(String descricao){
-        this.descricao = descricao;
+
+    public void setEmail(String email){
+        this.email = email;
     }
-    
-    // Para salvar em arquivo
-    public String toTxt(){
-        return titulo + ";" + artista + ";" + ano + ";" + genero + ";" + link + ";" + descricao;
+
+    public String getSenha(){
+        return senha;
+    }
+
+    public void setSenha(String senha){
+        this.senha = senha;
+    }
+
+    public List<String> getFavoritos(){
+        return favoritos;
+    }
+
+    public void setFavoritos(List<String> favoritos){
+        this.favoritos = favoritos;
+    }
+
+    public void adicionarFavorito(String idAlbum){
+        if(!favoritos.contains(idAlbum)){
+            favoritos.add(idAlbum);
+        }
+    }
+
+    public void removerFavorito(String idAlbum){
+        favoritos.remove(idAlbum);
+    }
+
+
+
+    @Override
+    public String toString(){
+        return "Usuario{" +
+        "id='" + id +'\''+
+        ", nome='" + nome + '\'' +
+        ", email='" + email + '\'' +
+        ", favoritos=" + favoritos +
+        '}';
     }
 }
