@@ -58,3 +58,8 @@ public abstract class Midia {
     public void setDescricao(String descricao){
         this.descricao = descricao;
     }
+
+    public String toTxt(){
+        return titulo + ";" + artista + ";" + ano + ";" + genero + ";" + link + ";" + descricao;
+    }
+}
