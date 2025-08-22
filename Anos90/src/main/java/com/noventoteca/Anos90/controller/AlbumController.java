@@ -47,10 +47,3 @@ public class AlbumController {
         return albuns.removeIf(a -> a.getId().equals(id));
     }
 }
-
-        // Busca por gênero
-        System.out.println("=== Busca por gênero: Pop ===");
-        view.exibirAlbuns(controller.buscarPorGenero("Pop"));
-    }
-}
-}
