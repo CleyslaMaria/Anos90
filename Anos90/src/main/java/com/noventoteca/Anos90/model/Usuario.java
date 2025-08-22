@@ -59,3 +59,43 @@ public class Usuario {
     public void remodeFavorito(String idAlbum){
         favoritos.remove(idAlbum);
     }
+
+    public String toTxt(){
+        String favs = String.join(",", favoritos);
+        return id + ";" + nome + ";" + email + ";" + senha + ";" + favs;
+    }
+
+    public static Usuario fromTxt(String registro){
+        String[] partes = registro.split(";");
+        if (partes.length < 4){
+            throw new IllegalArgumentException("Registro invalido: " + registro);
+
+        }
+
+        Usuario usuario = new Usuario(
+            partes[0],
+            partes[1],
+            partes[2],
+            partes[3]
+        );
+
+        if(partes.length == 5 && !partes[4].isEmpty()){
+            String[] favs = partes[4].split(",");
+            for(String f : favs){
+                usuario.adicionarFavorito(f);
+            }
+        }
+        return usuario;
+
+    }
+
+    @Override
+    public String toString(){
+        return "Usuario{" +
+        "id='" + id +'\''+
+        ", nome='" + nome + '\'' +
+        ", email='" + email + '\'' +
+        ", favoritos=" + favoritos +
+        '}';
+    }
+}
