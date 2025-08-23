@@ -19,14 +19,14 @@ public class AlbumRepository {
         if (url != null) {
             arquivoAlbuns = url.getFile();
         } else {
-            arquivoAlbuns = "albuns.txt"; // fallback
+            arquivoAlbuns = "albuns.txt";
         }
     }
 
     public List<Album> listarAlbuns() {
         List<Album> albuns = new ArrayList<>();
         File file = new File(arquivoAlbuns);
-        if (!file.exists()) return albuns; // evita exceção
+        if (!file.exists()) return albuns; 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String linha;
             while ((linha = br.readLine()) != null) {
