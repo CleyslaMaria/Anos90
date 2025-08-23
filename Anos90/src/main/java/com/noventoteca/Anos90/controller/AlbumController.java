@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 public class AlbumController {
     private final List<Album> albuns = new ArrayList<>();
 
-
     public AlbumController() {
         albuns.add(new Album("A001", "Ok Computer", "Radiohead", 1997, "Alternative Rock", "link1", "Descrição do álbum"));
         albuns.add(new Album("A002", "Homogenic", "Bjork", 1997, "Art Pop", "link2", "Descrição do álbum"));
