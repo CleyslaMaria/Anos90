@@ -9,18 +9,16 @@ import java.util.List;
 
 @Repository
 public class AlbumRepository {
-
     private final String arquivoAlbuns;
 
     public AlbumRepository() {
-        // Obtém o caminho do arquivo de álbuns do classpath
-        var url = getClass().getClassLoader().getResource("dados/albuns.txt");
-        if (url != null) {
-            arquivoAlbuns = url.getFile();
-        } else {
-            // Caso não encontre no classpath, usa um caminho padrão
-            arquivoAlbuns = "src/main/resources/dados/albuns.txt";
+        // Cria a pasta "data" se não existir
+        File pasta = new File("data");
+        if (!pasta.exists()) {
+            pasta.mkdirs();
         }
+
+        arquivoAlbuns = "data/albuns.txt";
     }
 
     /** Lê todos os álbuns do arquivo */
