@@ -11,14 +11,13 @@ public class UsuarioRepository {
     private final String arquivoUsuarios;
 
     public UsuarioRepository() {
-        // Obtém o caminho do arquivo de usuários no classpath
-        var url = getClass().getClassLoader().getResource("dados/usuarios.txt");
-        if (url != null) {
-            arquivoUsuarios = url.getFile();
-        } else {
-            // Caso não encontre no classpath, usa um caminho padrão
-            arquivoUsuarios = "src/main/resources/dados/usuarios.txt";
+        // Define caminho para salvar os dados fora do classpath
+        File pasta = new File("data");
+        if (!pasta.exists()) {
+            pasta.mkdirs(); // cria a pasta caso não exista
         }
+
+        arquivoUsuarios = "data/usuarios.txt";
     }
 
     /**
