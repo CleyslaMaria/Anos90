@@ -79,4 +79,5 @@ public class Usuario {
         ", favoritos=" + favoritos +
         '}';
     }
+
 }

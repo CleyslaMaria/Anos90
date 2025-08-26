@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Favoritos - Music Collection</title>
+    <title>Erro - Music Collection</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="min-h-screen">
@@ -69,33 +69,19 @@
 
     <main>
         <div class="container py-8">
-            <h1 class="mb-6">Meus Favoritos</h1>
-            
-            <div th:if="${session.usuario == null}" class="text-center py-12">
-                <p class="text-muted mb-4">Você precisa estar logado para ver seus favoritos.</p>
-                <a th:href="@{/login}" class="btn btn-primary">Fazer Login</a>
-            </div>
-
-            <div th:if="${session.usuario != null and (favoritos == null or favoritos.empty)}" class="text-center py-12">
-                <p class="text-muted mb-4">Você ainda não tem álbuns favoritos.</p>
-                <p class="text-muted mb-6">Navegue pelo acervo e adicione álbuns aos seus favoritos!</p>
-                <a th:href="@{/search}" class="btn btn-primary">Buscar Álbuns</a>
-            </div>
-            
-            <div th:if="${session.usuario != null and favoritos != null and !favoritos.empty}">
-                <div class="mb-6">
-                    <p class="text-muted" th:text="${favoritos.size() + ' álbuns favoritos'}">0 álbuns favoritos</p>
-                </div>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                    <div th:each="album : ${favoritos}">
-                        <a th:href="@{/albuns/{codigo}(codigo=${album.codigo})}" class="album-card-link">
-                            <div class="album-card">
-                                <img th:src="@{${album.link}}" th:alt="${'Capa do álbum ' + album.titulo}" th:if="${album.link != null}"/>
-                                <h3 th:text="${album.titulo}">Nome do Álbum</h3>
-                                <p th:text="${album.artista}">Artista</p>
-                            </div>
-                        </a>
+            <div class="max-w-md mx-auto text-center">
+                <div class="card">
+                    <div class="p-6">
+                        <h1 class="mb-4">Oops! Ocorreu um erro</h1>
+                        <p class="text-muted mb-6" th:if="${erro != null}" th:text="${erro}">
+                            Desculpe, mas ocorreu um erro inesperado.
+                            Por favor, tente novamente mais tarde.
+                        </p>
+                        <p class="text-muted mb-6" th:if="${erro == null}">
+                            Desculpe, mas ocorreu um erro inesperado.
+                            Por favor, tente novamente mais tarde.
+                        </p>
+                        <a th:href="@{/}" class="btn btn-primary">Voltar para a página inicial</a>
                     </div>
                 </div>
             </div>

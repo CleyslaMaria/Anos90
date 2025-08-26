@@ -92,11 +92,13 @@
 
             <div id="albums-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 <div th:each="album : ${albums}">
-                    <div class="album-card">
-                        <img th:src="@{${album.coverUrl}}" alt="Capa do Álbum"/>
-                        <h3 th:text="${album.name}">Nome do Álbum</h3>
-                        <p th:text="${album.artist}">Artista</p>
-                    </div>
+                    <a th:href="@{/albuns/{codigo}(codigo=${album.codigo})}" class="album-card-link">
+                        <div class="album-card">
+                            <img th:src="@{${album.link}}" alt="Capa do Álbum" th:if="${album.link != null}"/>
+                            <h3 th:text="${album.titulo}">Nome do Álbum</h3>
+                            <p th:text="${album.artista}">Artista</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>

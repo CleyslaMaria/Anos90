@@ -8,6 +8,10 @@ public abstract class Midia {
     private String link;
     private String descricao;
 
+    public Midia(){
+        
+    }
+
     public Midia(String titulo, String artista, int ano, String genero, String link, String descricao){
         this.titulo = titulo;
         this.artista = artista;

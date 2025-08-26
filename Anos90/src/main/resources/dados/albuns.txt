@@ -1,0 +1,59 @@
+A1990-01;Violator;Depeche Mode;1990;Synthpop;/images/violator.jpg;Álbum icônico do Depeche Mode com hits marcantes.
+A1990-02;I Do Not Want What I Haven't Got;Sinéad O'Connor;1990;Pop Rock;/images/idonotwant.jpg;Álbum de destaque da carreira de Sinéad O'Connor.
+A1990-03;Goo;Sonic Youth;1990;Rock;/images/goo.jpg;Disco influente do Sonic Youth nos anos 90.
+A1990-04;Rust In Peace;Megadeth;1990;Metal;/images/rustinpeace.jpg;Clássico do thrash metal da banda Megadeth.
+A1990-05;Heaven or Las Vegas;Cocteau Twins;1990;Dream Pop;/images/heavenorlasvegas.jpg;Obra-prima etérea do Cocteau Twins.
+
+A1991-01;Loveless;My Bloody Valentine;1991;Shoegaze;/images/loveless.jpg;Álbum revolucionário do shoegaze.
+A1991-02;Nevermind;Nirvana;1991;Grunge;/images/nevermind.jpg;Disco que levou o grunge ao mainstream.
+A1991-03;The Low End Theory;A Tribe Called Quest;1991;Hip Hop;/images/thelowendtheory.jpg;Clássico do hip hop alternativo.
+A1991-04;Spiderland;Slint;1991;Rock;/images/spiderland.jpg;Disco cult que influenciou o pós-rock.
+A1991-05;Ten;Pearl Jam;1991;Grunge;/images/ten.jpg;Álbum de estreia lendário do Pearl Jam.
+
+A1992-01;Senhas;Adriana Calcanhoto;1992;MPB;/images/senhas.jpg;Álbum marcante da música popular brasileira.
+A1992-02;Rage Against the Machine;Rage Against the Machine;1992;Metal;/images/ratm.jpg;Fusão explosiva de metal e rap.
+A1992-03;Erotica;Madonna;1992;Pop;/images/erotica.jpg;Álbum polêmico e ousado de Madonna.
+A1992-04;The Bodyguard;Whitney Houston;1992;Soul;/images/thebodyguard.jpg;Trilha sonora de enorme sucesso.
+A1992-05;Little Earthquakes;Tori Amos;1992;Pop;/images/littleearthquakes.jpg;Estreia intimista e poética de Tori Amos.
+
+A1993-01;Everybody Else Is Doing It, So Why Can't We?;The Cranberries;1993;Rock;/images/cranberries.jpg;Estreia de sucesso com a voz única de Dolores O'Riordan.
+A1993-02;Enter the Wu-Tang (36 Chambers);Wu-Tang Clan;1993;Hip Hop;/images/wutang.jpg;Álbum essencial do rap dos anos 90.
+A1993-03;August and Everything After;Counting Crows;1993;Pop Rock;/images/august.jpg;Álbum de estreia cheio de hits.
+A1993-04;In Utero;Nirvana;1993;Grunge;/images/inutero.jpg;O último álbum de estúdio do Nirvana.
+A1993-05;Debut;Björk;1993;Pop;/images/debut.jpg;Primeiro álbum solo marcante da Björk.
+
+A1994-01;Da Lama ao Caos;Chico Science & Nação Zumbi;1994;Manguebeat;/images/dalamaaocaos.jpg;Marco inicial do movimento Manguebeat.
+A1994-02;Verde Anil Amarelo Cor de Rosa e Carvão;Marisa Monte;1994;MPB;/images/marisamonte.jpg;Um dos maiores sucessos da carreira de Marisa Monte.
+A1994-03;Dummy;Portishead;1994;Electronic;/images/dummy.jpg;Álbum que definiu o trip hop.
+A1994-04;American Recordings;Johnny Cash;1994;Country;/images/americanrecordings.jpg;Disco minimalista e intimista de Johnny Cash.
+A1994-05;Definitely Maybe;Oasis;1994;Britpop;/images/definitelymaybe.jpg;Estreia explosiva do Oasis.
+
+A1995-01;Jagged Little Pill;Alanis Morissette;1995;Pop Rock;/images/jaggedlittlepill.jpg;Álbum que lançou Alanis ao estrelato mundial.
+A1995-02;Brown Sugar;D'Angelo;1995;R&B;/images/brownsugar.jpg;Estreia clássica do neo-soul.
+A1995-03;Inédito;Tom Jobim;1995;Bossa Nova;/images/inedito.jpg;Último álbum lançado por Tom Jobim.
+A1995-04;Mellon Collie and the Infinite Sadness;Smashing Pumpkins;1995;Rock;/images/melloncollie.jpg;Disco duplo ambicioso da banda.
+A1995-05;Different Class;Pulp;1995;Britpop;/images/differentclass.jpg;Obra-prima da banda britânica Pulp.
+
+A1996-01;Spice;Spice Girls;1996;Pop;/images/spice.jpg;Álbum de estreia que virou fenômeno cultural.
+A1996-02;If You’re Feeling Sinister;Belle and Sebastian;1996;Indie Pop;/images/ifyourefeelingsinister.jpg;Álbum cult do indie escocês.
+A1996-03;Holy Land;Angra;1996;Metal;/images/holyland.jpg;Álbum conceitual da banda brasileira Angra.
+A1996-04;ATLiens;Outkast;1996;Hip Hop;/images/atliens.jpg;Álbum inovador do Outkast.
+A1996-05;Tidal;Fiona Apple;1996;Pop;/images/tidal.jpg;Estreia aclamada da cantora e compositora Fiona Apple.
+
+A1997-01;OK Computer;Radiohead;1997;Rock;/images/okcomputer.jpg;Álbum revolucionário que redefiniu o rock alternativo.
+A1997-02;Time Out of Mind;Bob Dylan;1997;Folk;/images/timeoutofmind.jpg;Álbum premiado da fase madura de Dylan.
+A1997-03;Either/Or;Elliott Smith;1997;Folk;/images/eitheror.jpg;Obra melancólica de Elliott Smith.
+A1997-04;Come on Over;Shania Twain;1997;Pop;/images/comeonover.jpg;Álbum mais vendido de uma artista feminina na época.
+A1997-05;Around the Fur;Deftones;1997;Rock;/images/aroundthefur.jpg;Disco pesado e atmosférico dos Deftones.
+
+A1998-01;Kyuusai no gihou;Susumu Hirasawa;1998;Art Pop;/images/kyuusai.jpg;Álbum experimental japonês marcante.
+A1998-02;The Miseducation of Lauryn Hill;Lauryn Hill;1998;Hip Hop;/images/miseducation.jpg;Obra-prima do hip hop e R&B.
+A1998-03;Moon Safari;Air;1998;Electronic;/images/moonsafari.jpg;Álbum francês que popularizou o downtempo.
+A1998-04;Queens of the Stone Age;Queens of the Stone Age;1998;Rock;/images/qotsa.jpg;Estreia de peso da banda QOTSA.
+A1998-05;Mezzanine;Massive Attack;1998;Electronic;/images/mezzanine.jpg;Álbum sombrio e influente do trip hop.
+
+A1999-01;…Baby One More Time;Britney Spears;1999;Pop;/images/babyonemoretime.jpg;Estreia explosiva da princesa do pop.
+A1999-02;Millennium;Backstreet Boys;1999;Pop;/images/millennium.jpg;Sucesso estrondoso da boyband dos anos 90.
+A1999-03;Californication;Red Hot Chili Peppers;1999;Pop Rock;/images/californication.jpg;Retorno triunfal do RHCP com John Frusciante.
+A1999-04;The Slim Shady LP;Eminem;1999;Hip Hop;/images/slimshady.jpg;Disco que revelou Eminem ao mundo.
+A1999-05;Ágætis byrjun;Sigur Rós;1999;Post-Rock;/images/agaetis.jpg;Obra atmosférica e inovadora da banda islandesa.
