@@ -45,9 +45,9 @@ O sistema oferece as seguintes funcionalidades principais:
 
 Neste desenvolvimento, foi adotada a persistência ocorre através de arquivos de texto (.txt), que cumprem o papel de banco de dados. Dessa forma, existem dois arquivos principais dentro do projeto:
 
--usuarios.txt: responsável por armazenar os registros dos usuários. Cada linha do arquivo corresponde a um usuário, contendo dados como id, nome, email, senha e os códigos dos álbuns favoritados.
+- usuarios.txt: responsável por armazenar os registros dos usuários. Cada linha do arquivo corresponde a um usuário, contendo dados como id, nome, email, senha e os códigos dos álbuns favoritados.
 
--albuns.txt: armazena as informações de cada álbum, incluindo código, título, artista, ano, gênero, link e descrição.
+- albuns.txt: armazena as informações de cada álbum, incluindo código, título, artista, ano, gênero, link e descrição.
 
 Essa escolha exigiu a criação de repositórios próprios (UsuarioRepository e AlbumRepository), que contêm os métodos para ler e gravar dados diretamente nos arquivos de texto. Assim, operações como salvar um novo usuário, atualizar favoritos ou listar os álbuns cadastrados são feitas manipulando os arquivos .txt. Essa abordagem funciona como uma simulação de banco de dados, garantindo a persistência dos dados sem a necessidade de configurar um sistema relacional.
 
@@ -55,7 +55,7 @@ Essa escolha exigiu a criação de repositórios próprios (UsuarioRepository e 
 
 A estrutura segue o padrão MVC:
 
--Model: contém as classes principais do domínio, como Usuario, Album e a classe abstrata Midia. Essas classes representam os dados e suas regras básicas de funcionamento e o AlbumRepository e UsuarioRepository, que são responsáveis pelo acesso aos dados, realizando operações de leitura e escrita nos arquivos .txt. 
+- Model: contém as classes principais do domínio, como Usuario, Album e a classe abstrata Midia. Essas classes representam os dados e suas regras básicas de funcionamento e o AlbumRepository e UsuarioRepository, que são responsáveis pelo acesso aos dados, realizando operações de leitura e escrita nos arquivos .txt. 
 
 - Service: concentra a lógica de negócio da aplicação. Por exemplo, ao favoritar um álbum, o service valida se o álbum e o usuário existem, atualiza os favoritos e solicita que o repositório persista essa modificação.
 
