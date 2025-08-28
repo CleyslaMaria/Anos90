@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/albuns")
 public class AlbumController {
 
-    /** oO serviço de álbum é injetado aqui para que o controlador possa usar a 
+    /** O serviço de álbum é injetado aqui para que o controlador possa usar a 
      * lógica de negócio do serviço
     */
     private final AlbumService albumService;
