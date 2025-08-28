@@ -25,7 +25,7 @@ public class UsuarioService {
 
     /**
      * Cria um novo usuário no sistema
-     * usuario - Usuário a ser criado
+     * @param Usuário a ser criado
      */
     public void criarUsuario(Usuario usuario){
         Usuario existe = usuarioRepository.buscarPorEmail(usuario.getEmail());
@@ -38,9 +38,9 @@ public class UsuarioService {
 
     /**
      * Realiza o login de um usuário
-     * email - Email do usuário
-     * senha - Senha do usuário
-     * Retorna o usuário autenticado ou null se as credenciais forem inválidas
+     * @param Email do usuário
+     * @param Senha do usuário
+     * @return o usuário autenticado ou null se as credenciais forem inválidas
      */
     public Usuario login(String email, String senha) {
         return usuarioRepository.listarUsuarios().stream()
@@ -51,9 +51,9 @@ public class UsuarioService {
 
     /**
      * Adiciona um álbum aos favoritos do usuário
-     * usuarioId - ID do usuário
-     * albumCodigo - Código do álbum
-     * Retorna true se o álbum foi adicionado aos favoritos, false caso contrário
+     * @param ID do usuário
+     * @param Código do álbum
+     * @return true se o álbum foi adicionado aos favoritos, false caso contrário
      */
     public boolean favoritarAlbum(String usuarioId, String albumCodigo){
         Usuario usuario = usuarioRepository.buscarPorId(usuarioId);
@@ -73,9 +73,9 @@ public class UsuarioService {
 
     /**
      * Remove um álbum dos favoritos do usuário
-     * usuarioId - ID do usuário
-     * albumCodigo - Código do álbum
-     * Retorna true se o álbum foi removido dos favoritos, false caso contrário
+     * @param ID do usuário
+     * @param Código do álbum
+     * @return true se o álbum foi removido dos favoritos, false caso contrário
      */
     public boolean desfavoritarAlbum(String usuarioId, String albumCodigo){
         Usuario usuario = usuarioRepository.buscarPorId(usuarioId);
@@ -93,8 +93,8 @@ public class UsuarioService {
 
     /**
      * Lista os álbuns favoritos de um usuário
-     * usuarioId - ID do usuário
-     * Retorna a lista de álbuns favoritos
+     * @param ID do usuário
+     * @return a lista de álbuns favoritos
      */
     public List<Album> listarFavoritos(String usuarioId){
         Usuario usuario = usuarioRepository.buscarPorId(usuarioId);
@@ -111,7 +111,7 @@ public class UsuarioService {
 
     /**
      * Atualiza os dados de um usuário
-     * usuario - Usuário com os dados atualizados
+     * @param Usuário com os dados atualizados
      */
     public void atualizaDadosUsuario(Usuario usuario){
         usuarioRepository.atualizaUsuario(usuario);
@@ -119,7 +119,7 @@ public class UsuarioService {
 
     /**
      * Remove um usuário do sistema
-     * id - ID do usuário a ser removido
+     *@param ID do usuário a ser removido
      */
     public void removerDadosUsuario(String id){
         usuarioRepository.removerUsuario(id);

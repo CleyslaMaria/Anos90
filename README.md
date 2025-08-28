@@ -37,7 +37,7 @@ O sistema oferece as seguintes funcionalidades principais:
 
 - Favoritos: cada usuário pode adicionar ou remover álbuns da sua lista de favoritos, além de visualizar todos os que já foram salvos.
 
-- Exibição de informações: a aplicação mostra para o usuário detalhes de cada álbum, como código, título, artista, ano de lançamento, gênero, link e descrição.
+- Exibição de informações: a aplicação mostra para o usuário detalhes de cada álbum, como título, artista, ano de lançamento, gênero,uma curta descrição.
 
 ## Podrões e conceitos utilizados
 

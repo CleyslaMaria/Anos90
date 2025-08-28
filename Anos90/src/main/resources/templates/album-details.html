@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${album != null ? album.titulo + ' - ' : ''} + 'Detalhes do Álbum - Music Collection'">Detalhes do Álbum - Music Collection</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body class="min-h-screen">
     <!-- Header -->
@@ -24,7 +24,8 @@
 
                 <nav class="flex items-center gap-4">
                     <a th:href="@{/}" class="btn btn-ghost nav-link">Início</a>
-                    <a th:href="@{/search}" class="btn btn-ghost nav-link">Buscar</a>
+                    <a th:href="@{/albuns/}" class="btn btn-ghost nav-link">Álbuns</a>
+                    <a th:href="@{/albuns/search}" class="btn btn-ghost nav-link">Buscar</a>
                     <a th:href="@{/favorites}" class="btn btn-ghost nav-link" th:if="${session.usuario != null}">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
@@ -84,8 +85,20 @@
 
             <div th:if="${album != null}" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-1">
-                    <div class="aspect-square mb-4">
-                        <img th:src="@{${album.link}}" th:alt="${'Capa do álbum ' + album.titulo}" class="w-full h-full object-cover rounded-lg" th:if="${album.link != null}"/>
+                    <div class="mb-4">
+                        <!-- Correção do caminho da imagem para detalhes do álbum - tamanho natural -->
+                        <img th:src="@{/imagens/{imageName}(imageName=${album.link != null && !album.link.isEmpty() ? album.link.substring(album.link.lastIndexOf('/') + 1) : 'default.svg'})}"
+                             th:alt="${'Capa do álbum ' + album.titulo}"
+                             th:onerror="'this.src=\'/imagens/default.svg\'; this.onerror=null;'"
+                             class="w-full h-auto max-w-xs object-cover rounded-lg shadow-lg"
+                             th:if="${album.link != null}"/>
+                        <!-- Placeholder para álbuns sem imagem na página de detalhes -->
+                        <div th:if="${album.link == null || album.link.isEmpty()}" class="w-full h-64 bg-muted rounded-lg flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">🎵</div>
+                                <p class="text-muted-foreground text-sm">Sem Imagem</p>
+                            </div>
+                        </div>
                     </div>
                     
                     <div th:if="${session.usuario != null}" class="mb-4">
@@ -111,7 +124,7 @@
                     </div>
                 </div>
                 
-                <script th:inline="javascript">
+                <script th:inline="javascript" th:if="${session.usuario != null}">
                     /*<![CDATA[*/
                     const usuarioId = /*[[${session.usuario.id}]]*/ 'usuarioId';
                     const albumId = /*[[${album.codigo}]]*/ 'albumId';

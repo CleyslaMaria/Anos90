@@ -91,7 +91,16 @@
                     <div th:each="album : ${favoritos}">
                         <a th:href="@{/albuns/{codigo}(codigo=${album.codigo})}" class="album-card-link">
                             <div class="album-card">
-                                <img th:src="@{${album.link}}" th:alt="${'Capa do álbum ' + album.titulo}" th:if="${album.link != null}"/>
+                                <!-- Correção do caminho das imagens na página de favoritos -->
+                                <img th:src="@{/imagens/{imageName}(imageName=${album.link != null && !album.link.isEmpty() ? album.link.substring(album.link.lastIndexOf('/') + 1) : 'default.svg'})}"
+                                     th:alt="${'Capa do álbum ' + album.titulo}"
+                                     th:onerror="'this.src=\'/imagens/default.svg\'; this.onerror=null;'"
+                                     class="album-cover"
+                                     th:if="${album.link != null && !album.link.isEmpty()}"/>
+                                <!-- Placeholder para álbuns sem imagem nos favoritos -->
+                                <div th:if="${album.link == null || album.link.isEmpty()}" class="album-placeholder">
+                                    <div class="placeholder-icon">🎵</div>
+                                </div>
                                 <h3 th:text="${album.titulo}">Nome do Álbum</h3>
                                 <p th:text="${album.artista}">Artista</p>
                             </div>

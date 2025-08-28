@@ -4,34 +4,64 @@ import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Esta classe é o repositório de álbuns, responsável por lidar
+ * com a persistência de dados em um arquivo de texto.
+ */
 @Repository
 public class AlbumRepository {
-    private final String arquivoAlbuns;
 
+    /** Caminho do arquivo onde os álbuns serão salvos
+     * O arquivo está em uma pasta "dados" na raiz do projeto, para que seja editável
+     */
+    private final String arquivoAlbuns = "dados/albuns.txt"; 
+
+    /** Construtor do repositório
+     * Ele garante que o arquivo de dados exista ao iniciar a aplicação */
     public AlbumRepository() {
-        // Cria a pasta "data" se não existir
-        File pasta = new File("data");
-        if (!pasta.exists()) {
-            pasta.mkdirs();
-        }
-
-        arquivoAlbuns = "data/albuns.txt";
+        inicializarArquivoSeNecessario();
     }
 
-    /** Lê todos os álbuns do arquivo */
+    /** Verifica se o arquivo de dados externo existe. Se não,
+     * ele é criado. Se houver um arquivo inicial em resources,
+     * ele é copiado para o novo arquivo.
+     */
+    private void inicializarArquivoSeNecessario() {
+        File file = new File(arquivoAlbuns);
+
+        if (!file.exists()) {
+            file.getParentFile().mkdirs(); 
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream("dados/albuns_iniciais.txt")) {
+                if (is != null) {
+                    Files.copy(is, file.toPath());
+                    System.out.println("Arquivo albuns.txt criado com dados iniciais.");
+                } else {
+                    file.createNewFile();
+                    System.out.println("Arquivo albuns.txt criado vazio.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Lê todos os álbuns do arquivo de texto e os retorna como uma lista.
+     * @return Uma lista de objetos Album.
+     */
     public List<Album> listarAlbuns() {
         List<Album> albuns = new ArrayList<>();
         File file = new File(arquivoAlbuns);
 
-        if (!file.exists()) return albuns; // Retorna lista vazia se arquivo não existir
+        if (!file.exists()) return albuns; 
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
             String linha;
             while ((linha = br.readLine()) != null) {
-                // Ignora linhas vazias
                 if (!linha.trim().isEmpty()) {
                     albuns.add(fromTxt(linha));
                 }
@@ -44,7 +74,10 @@ public class AlbumRepository {
         return albuns;
     }
 
-    /** Adiciona um álbum ao arquivo */
+    /**
+     * Adiciona um álbum ao final do arquivo. Este método é usado para novos álbuns.
+     * @param album objeto Album a ser salvo.
+     */
     public void salvarAlbum(Album album) {
         try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivoAlbuns, true), StandardCharsets.UTF_8))) {
             bw.write(toTxt(album));
@@ -55,7 +88,11 @@ public class AlbumRepository {
         }
     }
 
-    /** Regrava todos os álbuns no arquivo */
+
+    /**
+     * Regrava todos os álbuns no arquivo. Este método é usado para atualizações ou remoções.
+     * @param albuns lista completa e atualizada de álbuns.
+     */
     public void atualizaAlbuns(List<Album> albuns) {
         try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivoAlbuns, false), StandardCharsets.UTF_8))) {
             for (Album a : albuns) {
@@ -68,7 +105,11 @@ public class AlbumRepository {
         }
     }
 
-    /** Busca um álbum pelo código */
+    /**
+     * Busca um álbum na lista pelo seu código de identificação.
+     * @param codigo código do álbum a ser buscado.
+     * @return objeto Album encontrado, ou null se não for encontrado.
+     */
     public Album buscarPorCodigo(String codigo) {
         return listarAlbuns().stream()
                 .filter(a -> a.getCodigo().equalsIgnoreCase(codigo))
@@ -76,14 +117,20 @@ public class AlbumRepository {
                 .orElse(null);
     }
 
-    /** Remove um álbum pelo código */
+    /**
+     * Remove um álbum da coleção pelo seu código.
+     * @param codigo código do álbum a ser removido.
+     */
     public void removerAlbum(String codigo) {
         List<Album> albuns = listarAlbuns();
         albuns.removeIf(a -> a.getCodigo().equalsIgnoreCase(codigo));
         atualizaAlbuns(albuns);
     }
 
-    /** Atualiza os dados de um álbum existente */
+    /**
+     * Atualiza os dados de um álbum existente na coleção.
+     * @param albumAtualizado objeto Album com os novos dados.
+     */
     public void atualizaDadosA(Album albumAtualizado) {
         List<Album> albuns = listarAlbuns();
         for (int i = 0; i < albuns.size(); i++) {
@@ -95,7 +142,12 @@ public class AlbumRepository {
         atualizaAlbuns(albuns);
     }
 
-    /** Converte uma linha do TXT para um objeto Album */
+    /**
+     * Converte uma linha de texto do arquivo em um objeto Album.
+     * @param registro  linha de texto a ser processada.
+     * @return Um objeto Album criado a partir da linha.
+     * @throws IllegalArgumentException se o registro for inválido.
+     */
     public static Album fromTxt(String registro) {
         String[] partes = registro.split(";");
         if (partes.length < 7) {
@@ -116,7 +168,11 @@ public class AlbumRepository {
         }
     }
 
-    /** Converte um objeto Album para formato TXT */
+    /**
+     * Converte um objeto Album em uma linha de texto para ser salva no arquivo.
+     * @param a O objeto Album a ser convertido.
+     * @return Uma String formatada para o arquivo de texto.
+     */
     public String toTxt(Album a) {
         String titulo = a.getTitulo() != null ? a.getTitulo() : "";
         String artista = a.getArtista() != null ? a.getArtista() : "";

@@ -5,23 +5,47 @@ import org.springframework.stereotype.Repository;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.file.Files;
 
+/**
+ * Repositório responsável por lidar com a persistência de dados dos usuários
+ * em um arquivo de texto.
+ */
 @Repository
 public class UsuarioRepository {
-    private final String arquivoUsuarios;
-
-    public UsuarioRepository() {
-        // Define caminho para salvar os dados fora do classpath
-        File pasta = new File("data");
-        if (!pasta.exists()) {
-            pasta.mkdirs(); // cria a pasta caso não exista
-        }
-
-        arquivoUsuarios = "data/usuarios.txt";
-    }
+    /** Caminho do arquivo onde os usuários serão salvos. */
+    private final String arquivoUsuarios = "dados/usuarios.txt";
 
     /**
+     * Verifica se o arquivo de dados externo existe. Se não existir,
+     * ele é criado. Caso exista um arquivo inicial em resources,
+     * ele é copiado para o novo arquivo.
+     */
+    public UsuarioRepository() {
+        inicializarSeNecessario();
+    }
+
+    private void inicializarSeNecessario() {
+        File file = new File(arquivoUsuarios);
+
+        if (!file.exists()) {
+            file.getParentFile().mkdirs(); 
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream("dados/usuarios_iniciais.txt")) {
+                if (is != null) {
+                    Files.copy(is, file.toPath());
+                    System.out.println("Arquivo usuarios.txt criado com dados iniciais.");
+                } else {
+                    file.createNewFile(); 
+                    System.out.println("Arquivo usuarios.txt criado vazio.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    /**
      * Lista todos os usuários do arquivo
+     * @return Uma lista de objetos Usuario
      */
     public List<Usuario> listarUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
@@ -36,7 +60,7 @@ public class UsuarioRepository {
                 new InputStreamReader(new FileInputStream(file), java.nio.charset.StandardCharsets.UTF_8))) {
             String linha;
             while ((linha = br.readLine()) != null) {
-                if (!linha.trim().isEmpty()) { // Ignora linhas vazias
+                if (!linha.trim().isEmpty()) { 
                     usuarios.add(fromTxt(linha));
                 }
             }
@@ -52,7 +76,8 @@ public class UsuarioRepository {
     }
 
     /**
-     * Salva um usuário no arquivo (acrescenta no final)
+     * Salva um usuário no arquivo, adicionando-o ao final
+     * @param usuario objeto Usuario a ser salvo
      */
     public void salvarUsuario(Usuario usuario) {
         try (BufferedWriter bw = new BufferedWriter(
@@ -68,6 +93,7 @@ public class UsuarioRepository {
 
     /**
      * Atualiza os dados de um usuário existente
+     * @param usuario objeto Usuario com os dados atualizados
      */
     public void atualizaUsuario(Usuario usuario) {
         List<Usuario> usuarios = listarUsuarios();
@@ -80,6 +106,12 @@ public class UsuarioRepository {
         salvarTodos(usuarios);
     }
 
+
+    /**
+     * Busca um usuário pelo seu ID
+     * @param id ID do usuário a ser buscado
+     * @return objeto Usuario encontrado, ou null se não for encontrado
+     */
     public Usuario buscarPorId(String id) {
         return listarUsuarios().stream()
                 .filter(u -> u.getId().equalsIgnoreCase(id))
@@ -87,6 +119,11 @@ public class UsuarioRepository {
                 .orElse(null);
     }
 
+    /**
+     * Busca um usuário pelo seu email
+     * @param email O email do usuário a ser buscado
+     * @return O objeto Usuario encontrado, ou null se não for encontrado
+     */
     public Usuario buscarPorEmail(String email) {
         return listarUsuarios().stream()
                 .filter(u -> u.getEmail().equalsIgnoreCase(email))
@@ -94,6 +131,10 @@ public class UsuarioRepository {
                 .orElse(null);
     }
 
+    /**
+     * Remove um usuário da coleção pelo seu ID
+     * @param id O ID do usuário a ser removido
+     */
     public void removerUsuario(String id) {
         List<Usuario> usuarios = listarUsuarios();
         usuarios.removeIf(u -> u.getId().equalsIgnoreCase(id));
@@ -101,7 +142,8 @@ public class UsuarioRepository {
     }
 
     /**
-     * Salva todos os usuários no arquivo (reescreve o arquivo)
+     * Salva todos os usuários no arquivo, reescrevendo-o.
+     * @param usuarios A lista completa e atualizada de usuários.
      */
     public void salvarTodos(List<Usuario> usuarios) {
         try (BufferedWriter bw = new BufferedWriter(
@@ -118,7 +160,9 @@ public class UsuarioRepository {
     }
 
     /**
-     * Converte um usuário em linha de texto
+     * Converte um objeto Usuario em uma linha de texto para ser salva no arquivo
+     * @param u O objeto Usuario a ser convertido
+     * @return Uma String formatada para o arquivo de texto
      */
     public String toTxt(Usuario u) {
         String favs = "";
@@ -133,7 +177,10 @@ public class UsuarioRepository {
     }
 
     /**
-     * Constrói um usuário a partir de uma linha de texto
+     * Converte uma linha de texto do arquivo em um objeto Usuario
+     * @param registro  linha de texto a ser processada
+     * @return  objeto Usuario criado a partir da linha
+     * @throws IllegalArgumentException se o registro for inválido
      */
     public static Usuario fromTxt(String registro) {
         String[] partes = registro.split(";");

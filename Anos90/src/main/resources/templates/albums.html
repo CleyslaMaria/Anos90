@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coleção de Álbuns - Music Collection</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header>
+        <div class="container py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <a th:href="@{/}">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13"/>
+                            <circle cx="6" cy="18" r="3"/>
+                            <circle cx="18" cy="16" r="3"/>
+                        </svg>
+                        <h1>Music Collection</h1>
+                    </a>
+                </div>
+
+                <!-- Navegação -->
+                <nav class="flex items-center gap-4">
+                    <a th:href="@{/}" class="btn btn-ghost nav-link">Início</a>
+                    <a th:href="@{/albuns/}" class="btn btn-ghost nav-link active">Álbuns</a>
+                    <a th:href="@{/albuns/search}" class="btn btn-ghost nav-link">Buscar</a>
+
+                    <!-- Favoritos visível apenas se estiver logado -->
+                    <a th:href="@{/favorites}" class="btn btn-ghost nav-link" th:if="${session.usuario != null}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                        Favoritos
+                    </a>
+
+                    <!-- Login/Logout -->
+                    <div th:if="${session.usuario == null}">
+                        <a th:href="@{/login}" class="btn btn-outline">Login</a>
+                    </div>
+                    <div th:if="${session.usuario != null}" class="flex items-center gap-2">
+                        <span class="text-sm text-muted" th:text="'Olá, ' + ${session.usuario.nome}">Usuário</span>
+                        <form th:action="@{/logout}" method="post" class="inline">
+                            <button type="submit" class="btn btn-ghost text-sm">Sair</button>
+                        </form>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main>
+        <div class="container py-8">
+            <!-- Cabeçalho da página -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold mb-4">Coleção de Álbuns dos Anos 90</h1>
+                <p class="text-muted mb-6">Explore nossa curadoria especial de álbuns que marcaram a década de 90.</p>
+                
+                <!-- Barra de busca rápida -->
+                <form th:action="@{/albuns/search}" method="get" class="flex gap-2 mb-6">
+                    <input type="text" name="q" placeholder="Buscar álbuns, artistas..." class="input flex-1" />
+                    <button type="submit" class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="M21 21l-4.35-4.35"/>
+                        </svg>
+                        Buscar
+                    </button>
+                </form>
+
+                <!-- Filtros rápidos por gênero -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-medium text-muted mb-3">Filtrar por gênero:</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <a th:href="@{/albuns}" class="btn btn-ghost btn-sm">Todos</a>
+                        <a th:href="@{/albuns/search(genre='Rock')}" class="btn btn-ghost btn-sm">Rock</a>
+                        <a th:href="@{/albuns/search(genre='Pop')}" class="btn btn-ghost btn-sm">Pop</a>
+                        <a th:href="@{/albuns/search(genre='Metal')}" class="btn btn-ghost btn-sm">Metal</a>
+                        <a th:href="@{/albuns/search(genre='Grunge')}" class="btn btn-ghost btn-sm">Grunge</a>
+                        <a th:href="@{/albuns/search(genre='Hip Hop')}" class="btn btn-ghost btn-sm">Hip Hop</a>
+                        <a th:href="@{/albuns/search(genre='MPB')}" class="btn btn-ghost btn-sm">MPB</a>
+                        <a th:href="@{/albuns/search(genre='Electronic')}" class="btn btn-ghost btn-sm">Electronic</a>
+                        <a th:href="@{/albuns/search(genre='Synthpop')}" class="btn btn-ghost btn-sm">Synthpop</a>
+                        <a th:href="@{/albuns/search(genre='Shoegaze')}" class="btn btn-ghost btn-sm">Shoegaze</a>
+                    </div>
+                </div>
+
+                <!-- Filtros rápidos por ano -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-medium text-muted mb-3">Filtrar por ano:</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <a th:href="@{/albuns}" class="btn btn-ghost btn-sm">Todos</a>
+                        <a th:href="@{/albuns/search(year='1990')}" class="btn btn-ghost btn-sm">1990</a>
+                        <a th:href="@{/albuns/search(year='1991')}" class="btn btn-ghost btn-sm">1991</a>
+                        <a th:href="@{/albuns/search(year='1992')}" class="btn btn-ghost btn-sm">1992</a>
+                        <a th:href="@{/albuns/search(year='1993')}" class="btn btn-ghost btn-sm">1993</a>
+                        <a th:href="@{/albuns/search(year='1994')}" class="btn btn-ghost btn-sm">1994</a>
+                        <a th:href="@{/albuns/search(year='1995')}" class="btn btn-ghost btn-sm">1995</a>
+                        <a th:href="@{/albuns/search(year='1996')}" class="btn btn-ghost btn-sm">1996</a>
+                        <a th:href="@{/albuns/search(year='1997')}" class="btn btn-ghost btn-sm">1997</a>
+                        <a th:href="@{/albuns/search(year='1998')}" class="btn btn-ghost btn-sm">1998</a>
+                        <a th:href="@{/albuns/search(year='1999')}" class="btn btn-ghost btn-sm">1999</a>
+                    </div>
+                </div>
+
+                <!-- Estatísticas -->
+                <div class="flex items-center gap-4 text-sm text-muted">
+                    <span th:text="${albumsCount + ' álbuns na coleção'}">60 álbuns na coleção</span>
+                    <span>•</span>
+                    <span>Década de 90</span>
+                </div>
+            </div>
+
+            <!-- Mensagem quando não há álbuns -->
+            <div th:if="${albumsCount == 0}" class="text-center py-12">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto text-muted mb-4">
+                    <path d="M9 18V5l12-2v13"/>
+                    <circle cx="6" cy="18" r="3"/>
+                    <circle cx="18" cy="16" r="3"/>
+                </svg>
+                <h3 class="text-lg font-medium mb-2">Nenhum álbum encontrado</h3>
+                <p class="text-muted">A coleção está vazia ou não foi possível carregar os álbuns.</p>
+            </div>
+
+            <!-- Grid de álbuns -->
+            <div th:if="${albumsCount > 0}" id="albums-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                <div th:each="album : ${albums}">
+                    <a th:href="@{/albuns/album/{codigo}(codigo=${album.codigo})}" class="album-card-link">
+                        <div class="album-card">
+                            <!-- Capa do álbum -->
+                            <img th:src="@{/imagens/{imageName}(imageName=${album.link != null && !album.link.isEmpty() ? album.link.substring(album.link.lastIndexOf('/') + 1) : 'default.svg'})}"
+                                 th:alt="${'Capa do álbum ' + album.titulo}"
+                                 th:onerror="'this.src=\'/imagens/default.svg\'; this.onerror=null;'"
+                                 class="album-cover"
+                                 th:if="${album.link != null && !album.link.isEmpty()}"/>
+                            
+                            <!-- Placeholder para álbuns sem imagem -->
+                            <div th:if="${album.link == null || album.link.isEmpty()}" class="album-placeholder">
+                                <div class="placeholder-icon">🎵</div>
+                            </div>
+                            
+                            <!-- Informações do álbum -->
+                            <div class="album-info">
+                                <h3 th:text="${album.titulo}">Nome do Álbum</h3>
+                                <p class="artist-name" th:text="${album.artista}">Artista</p>
+                                <div class="album-meta text-sm text-muted">
+                                    <span th:text="${album.ano}">Ano</span> • <span th:text="${album.genero}">Gênero</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

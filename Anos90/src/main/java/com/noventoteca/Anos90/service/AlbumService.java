@@ -4,8 +4,8 @@ import com.noventoteca.Anos90.model.Album;
 import com.noventoteca.Anos90.model.AlbumRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Random;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,25 +22,22 @@ public class AlbumService {
     }
 
     /**
-     * Busca álbuns com base em filtros: query, tipo de busca e gênero
-     * query - Texto para busca
-     * searchType - Tipo de busca (titulo, artista)
-     * genre Gênero musical
+     * Busca álbuns com base em filtros: query, tipo de busca, gênero e ano
      * Retorna a lista de álbuns que correspondem aos critérios
      */
-    public List<Album> buscarPorFiltros(String query, String searchType, String genre) {
-        // Se não há query, retorna todos os álbuns filtrados apenas por gênero
+    public List<Album> buscarPorFiltros(String query, String searchType, String genre, String year) {
         if (query == null || query.trim().isEmpty()) {
-            if (genre == null || genre.equals("all")) {
-                return repository.listarAlbuns();
-            } else {
-                return repository.listarAlbuns().stream()
-                    .filter(album -> album.getGenero().equalsIgnoreCase(genre))
-                    .collect(Collectors.toList());
-            }
+            return repository.listarAlbuns().stream()
+                .filter(album -> {
+                    boolean genreMatch = (genre == null || genre.equals("all") || album.getGenero().equalsIgnoreCase(genre));
+                    boolean yearMatch = (year == null || year.equals("all") || String.valueOf(album.getAno()).equals(year));
+                    return genreMatch && yearMatch;
+                })
+                .collect(Collectors.toList());
         }
 
-        String qLower = query.toLowerCase().trim();
+        // Converte a query para lowercase para busca case-insensitive
+        String qLower = query.toLowerCase();
 
         return repository.listarAlbuns().stream()
                 .filter(album -> {
@@ -52,16 +49,20 @@ public class AlbumService {
                                 || (album.getGenero() != null && album.getGenero().toLowerCase().contains(qLower));
                     };
 
-                    boolean matchesGenre = genre.equals("all") || album.getGenero().equalsIgnoreCase(genre);
+                    // O filtro de gênero é aplicado se o valor não for "all" ou nulo
+                    boolean genreMatches = genre.equals("all") || album.getGenero().equalsIgnoreCase(genre);
 
-                    return matchesQuery && matchesGenre;
+                    // O filtro de ano é aplicado se o valor não for "all" ou nulo
+                    boolean yearMatches = year.equals("all") || String.valueOf(album.getAno()).equals(year);
+
+                    return matchesQuery && genreMatches && yearMatches;
                 })
                 .collect(Collectors.toList());
     }
 
     /**
      * Adiciona um novo álbum à coleção
-     * album - Álbum a ser adicionado
+     * @param Álbum a ser adicionado
      */
     public void adicionarAlbum(Album album) {
         repository.salvarAlbum(album);
@@ -69,8 +70,8 @@ public class AlbumService {
 
     /**
      * Busca um álbum específico pelo seu código
-     * codigo - Código do álbum
-     * Retorna o álbum encontrado ou null se não encontrado
+     * @param Código do álbum
+     * @return o álbum encontrado ou null se não encontrado
      */
     public Album buscarPorCodigo(String codigo){
         return repository.buscarPorCodigo(codigo);
@@ -78,7 +79,7 @@ public class AlbumService {
 
     /**
      * Remove um álbum da coleção pelo seu código
-     * codigo - Código do álbum a ser removido
+     * @param Código do álbum a ser removido
      */
     public void removerAlbum(String codigo) {
         repository.removerAlbum(codigo);
@@ -86,20 +87,31 @@ public class AlbumService {
 
     /**
      * Atualiza os dados de um álbum existente
-     * album - Álbum com os dados atualizados
+     * @param Álbum com os dados atualizados
      */
     public void atualizarAlbum(Album album) {
         repository.atualizaDadosA(album);
     }
 
-    /**
-     * Seleciona um álbum aleatório da coleção
-     * Retorna álbum sorteado ou null se não houver álbuns
+        /**
+     * Retorna um conjunto com todos os anos de lançamento únicos dos álbuns
+     * @return Set de inteiros com os anos únicos
      */
-    public Album sortearAlbum() {
-        List<Album> albuns = repository.listarAlbuns();
-        if (albuns.isEmpty()) return null;
-        int index = new Random().nextInt(albuns.size());
-        return albuns.get(index);
+    public Set<Integer> listarAnosUnicos() {
+        return repository.listarAlbuns().stream()
+                .map(Album::getAno) 
+                .collect(Collectors.toSet());
     }
+
+    /**
+     * Retorna um conjunto com todos os gêneros únicos dos álbuns
+     * @return Set de strings com os gêneros únicos
+     */
+    public Set<String> listarGenerosUnicos() {
+        return repository.listarAlbuns().stream()
+                .map(Album::getGenero) 
+                .collect(Collectors.toSet());
+    }
+
 }
+

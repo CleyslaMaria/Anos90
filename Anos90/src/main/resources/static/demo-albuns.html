@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acervo Musical - Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header>
+        <div class="container py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer">
+                    <a href="/">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13"/>
+                            <circle cx="6" cy="18" r="3"/>
+                            <circle cx="18" cy="16" r="3"/>
+                        </svg>
+                        <h1>Music Collection</h1>
+                    </a>
+                </div>
+
+                <nav class="flex items-center gap-4">
+                    <a href="/" class="btn btn-ghost nav-link">Início</a>
+                    <a href="/search" class="btn btn-ghost nav-link">Buscar</a>
+                    <a href="/favorites" class="btn btn-ghost nav-link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                        Favoritos
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main>
+        <div class="container py-8">
+            <!-- Cabeçalho da página de álbuns -->
+            <div class="albums-header">
+                <h1>Coleção de Álbuns dos Anos 90</h1>
+                <p>Explore nossa curadoria especial de álbuns que marcaram a década de 90.</p>
+
+                <!-- Formulário de pesquisa simplificado -->
+                <form action="/search" method="get" class="search-form">
+                    <input type="text" name="q" placeholder="Buscar álbuns, artistas ou gêneros... (pressione Enter)" class="input"/>
+                </form>
+
+                <!-- Botões de navegação -->
+                <div class="flex flex-col md:flex-row gap-4">
+                    <a href="/search" class="btn btn-primary">Buscar Álbuns</a>
+                    <a href="/favorites" class="btn btn-outline">Meus Favoritos</a>
+                </div>
+            </div>
+
+            <!-- Seção de álbuns com contador melhorado -->
+            <div class="mb-6">
+                <h2 class="mb-4">Álbuns em Destaque</h2>
+                <p class="text-muted">25 álbuns disponíveis</p>
+            </div>
+
+            <!-- Grid de álbuns com estilo aprimorado e correção de imagens -->
+            <div id="albums-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                <!-- Exemplo de álbum com imagem -->
+                <div>
+                    <a href="/albuns/A1990-01" class="album-card-link">
+                        <div class="album-card">
+                            <img src="/imagens/violator.jpg" 
+                                 alt="Capa do álbum Violator"
+                                 onerror="this.src='/imagens/default.svg'; this.onerror=null;"
+                                 class="album-cover"/>
+                            <h3>Violator</h3>
+                            <p>Depeche Mode</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Exemplo de álbum com imagem -->
+                <div>
+                    <a href="/albuns/A1991-02" class="album-card-link">
+                        <div class="album-card">
+                            <img src="/imagens/nevermind.jpg" 
+                                 alt="Capa do álbum Nevermind"
+                                 onerror="this.src='/imagens/default.svg'; this.onerror=null;"
+                                 class="album-cover"/>
+                            <h3>Nevermind</h3>
+                            <p>Nirvana</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Exemplo de álbum sem imagem -->
+                <div>
+                    <a href="/albuns/A1991-01" class="album-card-link">
+                        <div class="album-card">
+                            <div class="album-placeholder">
+                                <div class="placeholder-icon">🎵</div>
+                            </div>
+                            <h3>Loveless</h3>
+                            <p>My Bloody Valentine</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Exemplo com imagem padrão -->
+                <div>
+                    <a href="/albuns/A1991-03" class="album-card-link">
+                        <div class="album-card">
+                            <img src="/imagens/default.svg" 
+                                 alt="Capa do álbum The Low End Theory"
+                                 class="album-cover"/>
+                            <h3>The Low End Theory</h3>
+                            <p>A Tribe Called Quest</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Mais exemplos -->
+                <div>
+                    <a href="/albuns/A1991-05" class="album-card-link">
+                        <div class="album-card">
+                            <img src="/imagens/ten.jpg" 
+                                 alt="Capa do álbum Ten"
+                                 onerror="this.src='/imagens/default.svg'; this.onerror=null;"
+                                 class="album-cover"/>
+                            <h3>Ten</h3>
+                            <p>Pearl Jam</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

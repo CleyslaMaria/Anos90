@@ -24,13 +24,25 @@
 
                 <nav class="flex items-center gap-4">
                     <a th:href="@{/}" class="btn btn-ghost nav-link">Início</a>
-                    <a th:href="@{/search}" class="btn btn-ghost nav-link">Buscar</a>
+                    <a th:href="@{/albuns/}" class="btn btn-ghost nav-link">Álbuns</a>
+                    <a th:href="@{/albuns/search}" class="btn btn-ghost nav-link active">Buscar</a>
                     <a th:href="@{/favorites}" class="btn btn-ghost nav-link" th:if="${session.usuario != null}">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                         </svg>
                         Favoritos
                     </a>
+
+                    <!-- Login/Logout -->
+                    <div th:if="${session.usuario == null}">
+                        <a th:href="@{/login}" class="btn btn-outline">Login</a>
+                    </div>
+                    <div th:if="${session.usuario != null}" class="flex items-center gap-2">
+                        <span class="text-sm text-muted" th:text="'Olá, ' + ${session.usuario.nome}">Usuário</span>
+                        <form th:action="@{/logout}" method="post" class="inline">
+                            <button type="submit" class="btn btn-ghost text-sm">Sair</button>
+                        </form>
+                    </div>
                 </nav>
             </div>
         </div>
@@ -38,59 +50,133 @@
 
     <main>
         <div class="container py-8">
+            <!-- Cabeçalho da página -->
             <div class="mb-8">
-                <h1 class="mb-6">Buscar Álbuns</h1>
-                
-                <!-- Search Form -->
-                <form th:action="@{/albuns/search}" method="get" class="card p-6">
-                    <div class="flex flex-col md:flex-row gap-4">
-                        <div class="flex-1">
-                            <input type="text" name="q" class="input" placeholder="Buscar por título, artista..." th:value="${query}">
-                        </div>
-                        
-                        <select name="searchType" class="select">
-                            <option value="title" th:selected="${searchType == 'title'}">Título</option>
-                            <option value="artist" th:selected="${searchType == 'artist'}">Artista</option>
-                            <option value="all" th:selected="${searchType == 'all' || searchType == null}">Todos os campos</option>
-                        </select>
+                <h1 class="text-3xl font-bold mb-4">Buscar Álbuns dos Anos 90</h1>
+                <p class="text-muted mb-6">Encontre seus álbuns favoritos usando nossa busca avançada com filtros por gênero, ano e artista.</p>
 
-                        <select name="genre" class="select">
-                            <option value="all" th:selected="${genre == 'all' || genre == null}">Todos os gêneros</option>
-                            <option value="Rock" th:selected="${genre == 'Rock'}">Rock</option>
-                            <option value="Progressive Rock" th:selected="${genre == 'Progressive Rock'}">Progressive Rock</option>
-                            <option value="Pop" th:selected="${genre == 'Pop'}">Pop</option>
-                            <option value="Jazz" th:selected="${genre == 'Jazz'}">Jazz</option>
-                            <option value="Soul" th:selected="${genre == 'Soul'}">Soul</option>
-                            <option value="Electronic" th:selected="${genre == 'Electronic'}">Electronic</option>
-                        </select>
-
-                        <button type="submit" class="btn btn-primary">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8"/>
-                                <path d="M21 21l-4.35-4.35"/>
-                            </svg>
-                            Buscar
-                        </button>
-                    </div>
+                <!-- Barra de busca rápida -->
+                <form th:action="@{/albuns/search}" method="get" class="flex gap-2 mb-6">
+                    <input type="text" name="q" placeholder="Buscar álbuns, artistas..." class="input flex-1" th:value="${query}"/>
+                    <button type="submit" class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="M21 21l-4.35-4.35"/>
+                        </svg>
+                        Buscar
+                    </button>
                 </form>
             </div>
 
-            <div class="mb-6">
-                <p class="text-muted" id="albums-count" th:text="${albumsCount} + ' álbuns encontrados'"></p>
+            <!-- Filtros avançados -->
+            <div class="bg-card border border-border rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold mb-4">Filtros Avançados</h3>
+                <form th:action="@{/albuns/search}" method="get">
+                    <input type="hidden" name="q" th:value="${query}"/>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <!-- Tipo de busca -->
+                        <div>
+                            <label class="block text-sm font-medium text-muted mb-2">Buscar em:</label>
+                            <select name="searchType" class="select w-full">
+                                <option value="all" th:selected="${searchType == 'all' || searchType == null}">Todos os campos</option>
+                                <option value="title" th:selected="${searchType == 'title'}">Apenas títulos</option>
+                                <option value="artist" th:selected="${searchType == 'artist'}">Apenas artistas</option>
+                            </select>
+                        </div>
+
+                        <!-- Filtro por gênero -->
+                        <div>
+                            <label class="block text-sm font-medium text-muted mb-2">Gênero musical:</label>
+                            <select name="genre" class="select w-full">
+                                <option value="all" th:selected="${genre == 'all' || genre == null}">Todos os gêneros</option>
+                                <option value="Alternative Rock" th:selected="${genre == 'Alternative Rock'}">Alternative Rock</option>
+                                <option value="Britpop" th:selected="${genre == 'Britpop'}">Britpop</option>
+                                <option value="Dream Pop" th:selected="${genre == 'Dream Pop'}">Dream Pop</option>
+                                <option value="Electronic" th:selected="${genre == 'Electronic'}">Electronic</option>
+                                <option value="Grunge" th:selected="${genre == 'Grunge'}">Grunge</option>
+                                <option value="Hip Hop" th:selected="${genre == 'Hip Hop'}">Hip Hop</option>
+                                <option value="MPB" th:selected="${genre == 'MPB'}">MPB</option>
+                                <option value="Metal" th:selected="${genre == 'Metal'}">Metal</option>
+                                <option value="Pop" th:selected="${genre == 'Pop'}">Pop</option>
+                                <option value="Pop Rock" th:selected="${genre == 'Pop Rock'}">Pop Rock</option>
+                                <option value="Rock" th:selected="${genre == 'Rock'}">Rock</option>
+                                <option value="Shoegaze" th:selected="${genre == 'Shoegaze'}">Shoegaze</option>
+                                <option value="Soul" th:selected="${genre == 'Soul'}">Soul</option>
+                                <option value="Synthpop" th:selected="${genre == 'Synthpop'}">Synthpop</option>
+                            </select>
+                        </div>
+
+                        <!-- Filtro por ano -->
+                        <div>
+                            <label class="block text-sm font-medium text-muted mb-2">Ano de lançamento:</label>
+                            <select name="year" class="select w-full">
+                                <option value="all" th:selected="${year == 'all' || year == null}">Todos os anos</option>
+                                <option value="1990" th:selected="${year == '1990'}">1990</option>
+                                <option value="1991" th:selected="${year == '1991'}">1991</option>
+                                <option value="1992" th:selected="${year == '1992'}">1992</option>
+                                <option value="1993" th:selected="${year == '1993'}">1993</option>
+                                <option value="1994" th:selected="${year == '1994'}">1994</option>
+                                <option value="1995" th:selected="${year == '1995'}">1995</option>
+                                <option value="1996" th:selected="${year == '1996'}">1996</option>
+                                <option value="1997" th:selected="${year == '1997'}">1997</option>
+                                <option value="1998" th:selected="${year == '1998'}">1998</option>
+                                <option value="1999" th:selected="${year == '1999'}">1999</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+                </form>
             </div>
 
-            <div id="albums-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                <div th:each="album : ${albums}" class="card p-4 border rounded shadow">
-                    <h2 class="font-bold mb-2" th:text="${album.titulo}"></h2>
-                    <p><strong>Artista:</strong> <span th:text="${album.artista}"></span></p>
-                    <p><strong>Ano:</strong> <span th:text="${album.ano}"></span></p>
-                    <p><strong>Gênero:</strong> <span th:text="${album.genero}"></span></p>
-                    <a th:href="@{/albuns/{codigo}(codigo=${album.codigo})}" class="btn btn-sm btn-primary mt-2">Detalhes</a>
+            <!-- Filtros rápidos por gênero -->
+            <div class="flex flex-wrap gap-2 mb-6">
+                <a th:href="@{/albuns/search(genre='all')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'all' || genre == null} ? 'bg-primary/10 text-primary' : ''">Todos</a>
+                <a th:href="@{/albuns/search(genre='Rock')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'Rock'} ? 'bg-primary/10 text-primary' : ''">Rock</a>
+                <a th:href="@{/albuns/search(genre='Pop')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'Pop'} ? 'bg-primary/10 text-primary' : ''">Pop</a>
+                <a th:href="@{/albuns/search(genre='Metal')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'Metal'} ? 'bg-primary/10 text-primary' : ''">Metal</a>
+                <a th:href="@{/albuns/search(genre='Grunge')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'Grunge'} ? 'bg-primary/10 text-primary' : ''">Grunge</a>
+                <a th:href="@{/albuns/search(genre='Hip Hop')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'Hip Hop'} ? 'bg-primary/10 text-primary' : ''">Hip Hop</a>
+                <a th:href="@{/albuns/search(genre='MPB')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'MPB'} ? 'bg-primary/10 text-primary' : ''">MPB</a>
+                <a th:href="@{/albuns/search(genre='Electronic')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'Electronic'} ? 'bg-primary/10 text-primary' : ''">Electronic</a>
+            </div>
+
+            <!-- Contador de resultados -->
+            <div class="mb-6" th:if="${albumsCount != null}">
+                <p class="text-muted" th:text="${albumsCount} + ' álbuns encontrados'"></p>
+            </div>
+
+            <!-- Grid de álbuns -->
+            <div th:if="${albumsCount > 0}" id="albums-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                <div th:each="album : ${albums}">
+                    <a th:href="@{/albuns/album/{codigo}(codigo=${album.codigo})}" class="album-card-link">
+                        <div class="album-card">
+                            <!-- Capa do álbum -->
+                            <img th:src="@{/imagens/{imageName}(imageName=${album.link != null && !album.link.isEmpty() ? album.link.substring(album.link.lastIndexOf('/') + 1) : 'default.svg'})}"
+                                 th:alt="${'Capa do álbum ' + album.titulo}"
+                                 th:onerror="'this.src=\'/imagens/default.svg\'; this.onerror=null;'"
+                                 class="album-cover"
+                                 th:if="${album.link != null && !album.link.isEmpty()}"/>
+                            <!-- Placeholder para álbuns sem imagem -->
+                            <div th:if="${album.link == null || album.link.isEmpty()}" class="album-placeholder">
+                                <div class="placeholder-icon">🎵</div>
+                            </div>
+                            <h3 th:text="${album.titulo}">Nome do Álbum</h3>
+                            <p th:text="${album.artista}">Artista</p>
+                            <!-- Informações adicionais -->
+                            <div class="text-sm text-muted mt-2">
+                                <p><span th:text="${album.ano}">Ano</span> • <span th:text="${album.genero}">Gênero</span></p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
 
-            <div th:if="${albumsCount == 0}" class="hidden text-center py-12">
-                <p class="text-muted">Nenhum álbum encontrado com os critérios de busca.</p>
+            <!-- Estado vazio para pesquisa -->
+            <div th:if="${albumsCount == 0}" class="text-center py-12">
+                <div class="text-6xl mb-4">🔍</div>
+                <h2 class="text-xl font-semibold mb-2">Nenhum álbum encontrado</h2>
+                <p class="text-muted mb-6">Tente ajustar os filtros de pesquisa ou usar termos diferentes.</p>
+                <a th:href="@{/albuns/}" class="btn btn-primary">Ver Todos os Álbuns</a>
             </div>
         </div>
     </main>
