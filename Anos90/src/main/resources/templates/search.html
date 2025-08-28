@@ -4,7 +4,321 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscar Álbuns - Music Collection</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <style>
+        /* CSS inline temporário para garantir que o layout funcione */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        :root {
+            --font-size: 14px;
+            --background: #ffffff;
+            --foreground: oklch(0.145 0 0);
+            --card: #ffffff;
+            --card-foreground: oklch(0.145 0 0);
+            --primary: #030213;
+            --primary-foreground: oklch(1 0 0);
+            --secondary: oklch(0.95 0.0058 264.53);
+            --secondary-foreground: #030213;
+            --muted: #ececf0;
+            --muted-foreground: #717182;
+            --accent: #e9ebef;
+            --accent-foreground: #030213;
+            --border: rgba(0, 0, 0, 0.1);
+            --input-background: #f3f3f5;
+            --radius: 0.625rem;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .mr-2 { margin-right: 0.5rem; }
+        .ml-1 { margin-left: 0.25rem; }
+
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .gap-8 { gap: 2rem; }
+
+        .text-center { text-align: center; }
+        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+        .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+        .text-xs { font-size: 0.75rem; line-height: 1rem; }
+
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .font-medium { font-weight: 500; }
+
+        .text-muted { color: var(--muted); }
+        .text-primary { color: var(--primary); }
+        .text-foreground { color: var(--foreground); }
+
+        .bg-card { background-color: var(--card); }
+        .bg-primary { background-color: var(--primary); }
+        .bg-primary\/10 { background-color: rgba(3, 2, 19, 0.1); }
+        .bg-muted\/20 { background-color: rgba(236, 236, 240, 0.2); }
+        .bg-muted\/10 { background-color: rgba(236, 236, 240, 0.1); }
+        .bg-secondary { background-color: var(--secondary); }
+        .bg-accent { background-color: var(--accent); }
+
+        .border { border-width: 1px; }
+        .border-2 { border-width: 2px; }
+        .border-border { border-color: var(--border); }
+        .border-primary { border-color: var(--primary); }
+
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-full { border-radius: 9999px; }
+
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .pl-4 { padding-left: 1rem; }
+        .pl-12 { padding-left: 3rem; }
+        .pr-2 { padding-right: 0.5rem; }
+        .pr-32 { padding-right: 8rem; }
+
+        .w-full { width: 100%; }
+        .w-12 { width: 3rem; }
+        .w-20 { width: 5rem; }
+        .w-24 { width: 6rem; }
+        .h-12 { height: 3rem; }
+        .h-20 { height: 5rem; }
+        .h-24 { height: 6rem; }
+
+        .max-w-2xl { max-width: 42rem; }
+        .max-w-4xl { max-width: 56rem; }
+        .max-w-7xl { max-width: 80rem; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+
+        .grid { display: grid; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+        .space-y-3 > * + * { margin-top: 0.75rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+
+        .flex-wrap { flex-wrap: wrap; }
+        .flex-col { flex-direction: column; }
+
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .inset-y-0 { top: 0; bottom: 0; }
+        .left-0 { left: 0; }
+        .right-0 { right: 0; }
+
+        .pointer-events-none { pointer-events: none; }
+        .appearance-none { appearance: none; }
+
+        .transition-all { transition: all 0.3s ease; }
+        .transition-colors { transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; }
+        .transition-transform { transition: transform 0.3s ease; }
+
+        .hover\:scale-105:hover { transform: scale(1.05); }
+        .hover\:scale-110:hover { transform: scale(1.1); }
+        .hover\:border-primary:hover { border-color: var(--primary); }
+        .hover\:shadow-xl:hover { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+
+        .focus\:border-primary:focus { border-color: var(--primary); }
+        .focus\:outline-none:focus { outline: none; }
+
+        .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+
+        .hover\:shadow-md:hover { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+
+        .duration-200 { transition-duration: 200ms; }
+
+        .overflow-hidden { overflow: hidden; }
+        .aspect-square { aspect-ratio: 1 / 1; }
+        .object-cover { object-fit: cover; }
+
+        .line-clamp-1 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+        }
+        .line-clamp-2 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+
+        /* Componentes específicos */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius);
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            padding: 0.5rem 1rem;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--secondary-foreground);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            background-color: transparent;
+            color: var(--foreground);
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            color: var(--foreground);
+        }
+
+        .btn-ghost:hover {
+            background-color: var(--accent);
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+            border-radius: calc(var(--radius) - 2px);
+        }
+
+        .btn-sm:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background-color: var(--input-background);
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+            color: var(--foreground);
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--background);
+        }
+
+        .select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background-color: var(--input-background);
+            font-size: 1rem;
+            cursor: pointer;
+            color: var(--foreground);
+        }
+
+        .select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--background);
+        }
+
+        .album-card {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .album-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .album-cover {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: calc(var(--radius) - 2px);
+            margin-bottom: 1rem;
+        }
+
+        .album-placeholder {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: var(--muted);
+            border-radius: calc(var(--radius) - 2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            border: 2px dashed var(--border);
+            color: var(--muted-foreground);
+        }
+
+        /* Responsividade */
+        @media (min-width: 640px) {
+            .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .sm\:flex-row { flex-direction: row; }
+        }
+
+        @media (min-width: 768px) {
+            .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .md\:flex { display: flex; }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        }
+
+        @media (min-width: 1280px) {
+            .xl\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+        }
+    </style>
 </head>
 <body class="min-h-screen">
     <!-- Header -->
@@ -50,133 +364,267 @@
 
     <main>
         <div class="container py-8">
-            <!-- Cabeçalho da página -->
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold mb-4">Buscar Álbuns dos Anos 90</h1>
-                <p class="text-muted mb-6">Encontre seus álbuns favoritos usando nossa busca avançada com filtros por gênero, ano e artista.</p>
-
-                <!-- Barra de busca rápida -->
-                <form th:action="@{/albuns/search}" method="get" class="flex gap-2 mb-6">
-                    <input type="text" name="q" placeholder="Buscar álbuns, artistas..." class="input flex-1" th:value="${query}"/>
-                    <button type="submit" class="btn btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Hero Section da Busca -->
+            <div class="text-center mb-12">
+                <div class="mb-6">
+                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
                             <circle cx="11" cy="11" r="8"/>
                             <path d="M21 21l-4.35-4.35"/>
                         </svg>
-                        Buscar
-                    </button>
-                </form>
+                    </div>
+                    <h1 class="text-4xl font-bold mb-4">Buscar Álbuns dos Anos 90</h1>
+                    <p class="text-xl text-muted max-w-2xl mx-auto">Encontre seus álbuns favoritos da década que marcou a música mundial</p>
+                </div>
+
+                <!-- Barra de busca principal estilizada -->
+                <div class="max-w-2xl mx-auto">
+                    <form th:action="@{/albuns/search}" method="get">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <path d="M21 21l-4.35-4.35"/>
+                                </svg>
+                            </div>
+                            <input type="text" name="q" class="w-full pl-12 pr-32 py-4 text-lg border-2 border-border rounded-full focus:border-primary focus:outline-none transition-colors" placeholder="Digite o nome do álbum, artista ou gênero..." th:value="${query}"/>
+                            <button type="submit" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <div class="btn btn-primary rounded-full px-6 py-3 font-medium shadow-sm hover:shadow-md transition-all duration-200">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <path d="M21 21l-4.35-4.35"/>
+                                    </svg>
+                                    Buscar
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
-            <!-- Filtros avançados -->
-            <div class="bg-card border border-border rounded-lg p-6 mb-8">
-                <h3 class="text-lg font-semibold mb-4">Filtros Avançados</h3>
-                <form th:action="@{/albuns/search}" method="get">
-                    <input type="hidden" name="q" th:value="${query}"/>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <!-- Tipo de busca -->
-                        <div>
-                            <label class="block text-sm font-medium text-muted mb-2">Buscar em:</label>
-                            <select name="searchType" class="select w-full">
-                                <option value="all" th:selected="${searchType == 'all' || searchType == null}">Todos os campos</option>
-                                <option value="title" th:selected="${searchType == 'title'}">Apenas títulos</option>
-                                <option value="artist" th:selected="${searchType == 'artist'}">Apenas artistas</option>
-                            </select>
-                        </div>
-
-                        <!-- Filtro por gênero -->
-                        <div>
-                            <label class="block text-sm font-medium text-muted mb-2">Gênero musical:</label>
-                            <select name="genre" class="select w-full">
-                                <option value="all" th:selected="${genre == 'all' || genre == null}">Todos os gêneros</option>
-                                <option value="Alternative Rock" th:selected="${genre == 'Alternative Rock'}">Alternative Rock</option>
-                                <option value="Britpop" th:selected="${genre == 'Britpop'}">Britpop</option>
-                                <option value="Dream Pop" th:selected="${genre == 'Dream Pop'}">Dream Pop</option>
-                                <option value="Electronic" th:selected="${genre == 'Electronic'}">Electronic</option>
-                                <option value="Grunge" th:selected="${genre == 'Grunge'}">Grunge</option>
-                                <option value="Hip Hop" th:selected="${genre == 'Hip Hop'}">Hip Hop</option>
-                                <option value="MPB" th:selected="${genre == 'MPB'}">MPB</option>
-                                <option value="Metal" th:selected="${genre == 'Metal'}">Metal</option>
-                                <option value="Pop" th:selected="${genre == 'Pop'}">Pop</option>
-                                <option value="Pop Rock" th:selected="${genre == 'Pop Rock'}">Pop Rock</option>
-                                <option value="Rock" th:selected="${genre == 'Rock'}">Rock</option>
-                                <option value="Shoegaze" th:selected="${genre == 'Shoegaze'}">Shoegaze</option>
-                                <option value="Soul" th:selected="${genre == 'Soul'}">Soul</option>
-                                <option value="Synthpop" th:selected="${genre == 'Synthpop'}">Synthpop</option>
-                            </select>
-                        </div>
-
-                        <!-- Filtro por ano -->
-                        <div>
-                            <label class="block text-sm font-medium text-muted mb-2">Ano de lançamento:</label>
-                            <select name="year" class="select w-full">
-                                <option value="all" th:selected="${year == 'all' || year == null}">Todos os anos</option>
-                                <option value="1990" th:selected="${year == '1990'}">1990</option>
-                                <option value="1991" th:selected="${year == '1991'}">1991</option>
-                                <option value="1992" th:selected="${year == '1992'}">1992</option>
-                                <option value="1993" th:selected="${year == '1993'}">1993</option>
-                                <option value="1994" th:selected="${year == '1994'}">1994</option>
-                                <option value="1995" th:selected="${year == '1995'}">1995</option>
-                                <option value="1996" th:selected="${year == '1996'}">1996</option>
-                                <option value="1997" th:selected="${year == '1997'}">1997</option>
-                                <option value="1998" th:selected="${year == '1998'}">1998</option>
-                                <option value="1999" th:selected="${year == '1999'}">1999</option>
-                            </select>
-                        </div>
+            <!-- Filtros avançados com design melhorado -->
+            <div class="max-w-4xl mx-auto mb-12">
+                <div class="bg-card border border-border rounded-xl p-8 shadow-sm">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-semibold mb-2">Filtros Avançados</h3>
+                        <p class="text-muted">Refine sua busca para encontrar exatamente o que procura</p>
                     </div>
-                    <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
-                </form>
+
+                    <form th:action="@{/albuns/search}" method="get">
+                        <input type="hidden" name="q" th:value="${query}"/>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Tipo de busca -->
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-foreground">Buscar em:</label>
+                                <div class="relative">
+                                    <select name="searchType" class="w-full p-3 border-2 border-border rounded-lg focus:border-primary focus:outline-none appearance-none bg-background">
+                                        <option value="all" th:selected="${searchType == 'all' || searchType == null}">Todos os campos</option>
+                                        <option value="title" th:selected="${searchType == 'title'}">Apenas títulos</option>
+                                        <option value="artist" th:selected="${searchType == 'artist'}">Apenas artistas</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted">
+                                            <polyline points="6,9 12,15 18,9"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Filtro por gênero -->
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-foreground">Gênero musical:</label>
+                                <div class="relative">
+                                    <select name="genre" class="w-full p-3 border-2 border-border rounded-lg focus:border-primary focus:outline-none appearance-none bg-background">
+                                        <option value="all" th:selected="${genre == 'all' || genre == null}">Todos os gêneros</option>
+                                        <option value="Alternative Rock" th:selected="${genre == 'Alternative Rock'}">Alternative Rock</option>
+                                        <option value="Britpop" th:selected="${genre == 'Britpop'}">Britpop</option>
+                                        <option value="Dream Pop" th:selected="${genre == 'Dream Pop'}">Dream Pop</option>
+                                        <option value="Electronic" th:selected="${genre == 'Electronic'}">Electronic</option>
+                                        <option value="Grunge" th:selected="${genre == 'Grunge'}">Grunge</option>
+                                        <option value="Hip Hop" th:selected="${genre == 'Hip Hop'}">Hip Hop</option>
+                                        <option value="MPB" th:selected="${genre == 'MPB'}">MPB</option>
+                                        <option value="Metal" th:selected="${genre == 'Metal'}">Metal</option>
+                                        <option value="Pop" th:selected="${genre == 'Pop'}">Pop</option>
+                                        <option value="Pop Rock" th:selected="${genre == 'Pop Rock'}">Pop Rock</option>
+                                        <option value="Rock" th:selected="${genre == 'Rock'}">Rock</option>
+                                        <option value="Shoegaze" th:selected="${genre == 'Shoegaze'}">Shoegaze</option>
+                                        <option value="Soul" th:selected="${genre == 'Soul'}">Soul</option>
+                                        <option value="Synthpop" th:selected="${genre == 'Synthpop'}">Synthpop</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted">
+                                            <polyline points="6,9 12,15 18,9"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Filtro por ano -->
+                            <div class="space-y-3">
+                                <label class="block text-sm font-semibold text-foreground">Ano de lançamento:</label>
+                                <div class="relative">
+                                    <select name="year" class="w-full p-3 border-2 border-border rounded-lg focus:border-primary focus:outline-none appearance-none bg-background">
+                                        <option value="all" th:selected="${year == 'all' || year == null}">Todos os anos</option>
+                                        <option value="1990" th:selected="${year == '1990'}">1990</option>
+                                        <option value="1991" th:selected="${year == '1991'}">1991</option>
+                                        <option value="1992" th:selected="${year == '1992'}">1992</option>
+                                        <option value="1993" th:selected="${year == '1993'}">1993</option>
+                                        <option value="1994" th:selected="${year == '1994'}">1994</option>
+                                        <option value="1995" th:selected="${year == '1995'}">1995</option>
+                                        <option value="1996" th:selected="${year == '1996'}">1996</option>
+                                        <option value="1997" th:selected="${year == '1997'}">1997</option>
+                                        <option value="1998" th:selected="${year == '1998'}">1998</option>
+                                        <option value="1999" th:selected="${year == '1999'}">1999</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted">
+                                            <polyline points="6,9 12,15 18,9"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+                </div>
             </div>
 
             <!-- Filtros rápidos por gênero -->
-            <div class="flex flex-wrap gap-2 mb-6">
-                <a th:href="@{/albuns/search(genre='all')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'all' || genre == null} ? 'bg-primary/10 text-primary' : ''">Todos</a>
-                <a th:href="@{/albuns/search(genre='Rock')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'Rock'} ? 'bg-primary/10 text-primary' : ''">Rock</a>
-                <a th:href="@{/albuns/search(genre='Pop')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'Pop'} ? 'bg-primary/10 text-primary' : ''">Pop</a>
-                <a th:href="@{/albuns/search(genre='Metal')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'Metal'} ? 'bg-primary/10 text-primary' : ''">Metal</a>
-                <a th:href="@{/albuns/search(genre='Grunge')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'Grunge'} ? 'bg-primary/10 text-primary' : ''">Grunge</a>
-                <a th:href="@{/albuns/search(genre='Hip Hop')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'Hip Hop'} ? 'bg-primary/10 text-primary' : ''">Hip Hop</a>
-                <a th:href="@{/albuns/search(genre='MPB')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'MPB'} ? 'bg-primary/10 text-primary' : ''">MPB</a>
-                <a th:href="@{/albuns/search(genre='Electronic')}" class="btn btn-ghost btn-sm" th:classappend="${genre == 'Electronic'} ? 'bg-primary/10 text-primary' : ''">Electronic</a>
+            <div class="max-w-4xl mx-auto mb-12">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-semibold mb-2">Filtros Rápidos</h3>
+                    <p class="text-muted">Clique em um gênero para filtrar rapidamente</p>
+                </div>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <a th:href="@{/albuns/}" class="px-6 py-3 rounded-full border-2 transition-all hover:scale-105 font-medium" th:classappend="${genre == 'all' || genre == null} ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary'">Todos</a>
+                    <a th:href="@{/albuns/search(genre='Rock')}" class="px-6 py-3 rounded-full border-2 transition-all hover:scale-105 font-medium" th:classappend="${genre == 'Rock'} ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary'">Rock</a>
+                    <a th:href="@{/albuns/search(genre='Pop')}" class="px-6 py-3 rounded-full border-2 transition-all hover:scale-105 font-medium" th:classappend="${genre == 'Pop'} ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary'">Pop</a>
+                    <a th:href="@{/albuns/search(genre='Metal')}" class="px-6 py-3 rounded-full border-2 transition-all hover:scale-105 font-medium" th:classappend="${genre == 'Metal'} ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary'">Metal</a>
+                    <a th:href="@{/albuns/search(genre='Grunge')}" class="px-6 py-3 rounded-full border-2 transition-all hover:scale-105 font-medium" th:classappend="${genre == 'Grunge'} ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary'">Grunge</a>
+                    <a th:href="@{/albuns/search(genre='Hip Hop')}" class="px-6 py-3 rounded-full border-2 transition-all hover:scale-105 font-medium" th:classappend="${genre == 'Hip Hop'} ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary'">Hip Hop</a>
+                    <a th:href="@{/albuns/search(genre='MPB')}" class="px-6 py-3 rounded-full border-2 transition-all hover:scale-105 font-medium" th:classappend="${genre == 'MPB'} ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary'">MPB</a>
+                    <a th:href="@{/albuns/search(genre='Electronic')}" class="px-6 py-3 rounded-full border-2 transition-all hover:scale-105 font-medium" th:classappend="${genre == 'Electronic'} ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary'">Electronic</a>
+                </div>
             </div>
 
-            <!-- Contador de resultados -->
-            <div class="mb-6" th:if="${albumsCount != null}">
-                <p class="text-muted" th:text="${albumsCount} + ' álbuns encontrados'"></p>
-            </div>
-
-            <!-- Grid de álbuns -->
-            <div th:if="${albumsCount > 0}" id="albums-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                <div th:each="album : ${albums}">
-                    <a th:href="@{/albuns/album/{codigo}(codigo=${album.codigo})}" class="album-card-link">
-                        <div class="album-card">
-                            <!-- Capa do álbum -->
-                            <img th:src="@{/imagens/{imageName}(imageName=${album.link != null && !album.link.isEmpty() ? album.link.substring(album.link.lastIndexOf('/') + 1) : 'default.svg'})}"
-                                 th:alt="${'Capa do álbum ' + album.titulo}"
-                                 th:onerror="'this.src=\'/imagens/default.svg\'; this.onerror=null;'"
-                                 class="album-cover"
-                                 th:if="${album.link != null && !album.link.isEmpty()}"/>
-                            <!-- Placeholder para álbuns sem imagem -->
-                            <div th:if="${album.link == null || album.link.isEmpty()}" class="album-placeholder">
-                                <div class="placeholder-icon">🎵</div>
+            <!-- Seção de resultados -->
+            <div th:if="${albumsCount != null}" class="mb-8">
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-card border border-border rounded-xl p-6 mb-8">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                                        <path d="M9 18V5l12-2v13"/>
+                                        <circle cx="6" cy="18" r="3"/>
+                                        <circle cx="18" cy="16" r="3"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl font-bold" th:text="${albumsCount} + ' álbuns encontrados'">Resultados</h2>
+                                    <p class="text-muted" th:if="${query != null && !query.isEmpty()}" th:text="'Busca por: &quot;' + ${query} + '&quot;'">Termo de busca</p>
+                                </div>
                             </div>
-                            <h3 th:text="${album.titulo}">Nome do Álbum</h3>
-                            <p th:text="${album.artista}">Artista</p>
-                            <!-- Informações adicionais -->
-                            <div class="text-sm text-muted mt-2">
-                                <p><span th:text="${album.ano}">Ano</span> • <span th:text="${album.genero}">Gênero</span></p>
+                            <div class="text-right">
+                                <p class="text-sm text-muted">Coleção Anos 90</p>
+                                <p class="text-xs text-muted">Música nostálgica</p>
                             </div>
                         </div>
-                    </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de álbuns com design aprimorado -->
+            <div th:if="${albumsCount > 0}" class="max-w-7xl mx-auto">
+                <div id="albums-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+                    <div th:each="album : ${albums}" class="group">
+                        <a th:href="@{/albuns/album/{codigo}(codigo=${album.codigo})}" class="album-card-link block">
+                            <div class="album-card bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                                <!-- Capa do álbum com overlay -->
+                                <div class="relative aspect-square overflow-hidden">
+                                    <img th:src="@{/imagens/{imageName}(imageName=${album.link != null && !album.link.isEmpty() ? album.link.substring(album.link.lastIndexOf('/') + 1) : 'default.svg'})}"
+                                         th:alt="${'Capa do álbum ' + album.titulo}"
+                                         th:onerror="'this.src=\'/imagens/default.svg\'; this.onerror=null;'"
+                                         class="album-cover w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                         th:if="${album.link != null && !album.link.isEmpty()}"/>
+
+                                    <!-- Placeholder para álbuns sem imagem -->
+                                    <div th:if="${album.link == null || album.link.isEmpty()}" class="album-placeholder w-full h-full bg-gradient-to-br from-muted/20 to-muted/40 flex items-center justify-center">
+                                        <div class="text-4xl text-muted">♪</div>
+                                    </div>
+
+                                    <!-- Overlay com efeito hover -->
+                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-75 group-hover:scale-100">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary-foreground ml-1">
+                                                <polygon points="5,3 19,12 5,21 5,3"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Informações do álbum -->
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-foreground mb-1 line-clamp-2 group-hover:text-primary transition-colors" th:text="${album.titulo}">Nome do Álbum</h3>
+                                    <p class="text-muted text-sm mb-3 line-clamp-1" th:text="${album.artista}">Artista</p>
+
+                                    <!-- Tags de informação -->
+                                    <div class="flex items-center gap-2 text-xs">
+                                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-medium" th:text="${album.ano}">Ano</span>
+                                        <span class="bg-muted/50 text-muted-foreground px-3 py-1 rounded-full" th:text="${album.genero}">Gênero</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <!-- Estado vazio para pesquisa -->
-            <div th:if="${albumsCount == 0}" class="text-center py-12">
-                <div class="text-6xl mb-4">🔍</div>
-                <h2 class="text-xl font-semibold mb-2">Nenhum álbum encontrado</h2>
-                <p class="text-muted mb-6">Tente ajustar os filtros de pesquisa ou usar termos diferentes.</p>
-                <a th:href="@{/albuns/}" class="btn btn-primary">Ver Todos os Álbuns</a>
+            <div th:if="${albumsCount == 0}" class="max-w-2xl mx-auto text-center py-16">
+                <div class="mb-8">
+                    <div class="w-24 h-24 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-muted">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="M21 21l-4.35-4.35"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-3">Nenhum álbum encontrado</h2>
+                    <p class="text-muted mb-8 text-lg">Não encontramos álbuns que correspondam aos seus critérios de busca. Tente ajustar os filtros ou usar termos diferentes.</p>
+                </div>
+
+                <!-- Sugestões de ação -->
+                <div class="space-y-4">
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a th:href="@{/albuns/}" class="btn btn-primary px-6 py-3 rounded-lg">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                                <path d="M9 18V5l12-2v13"/>
+                                <circle cx="6" cy="18" r="3"/>
+                                <circle cx="18" cy="16" r="3"/>
+                            </svg>
+                            Ver Todos os Álbuns
+                        </a>
+                        <a th:href="@{/albuns/search}" class="btn btn-outline px-6 py-3 rounded-lg">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                            Nova Busca
+                        </a>
+                    </div>
+
+                    <!-- Dicas de busca -->
+                    <div class="mt-8 p-6 bg-muted/10 rounded-xl">
+                        <h3 class="font-semibold mb-3">Dicas de busca:</h3>
+                        <ul class="text-sm text-muted space-y-2 text-left max-w-md mx-auto">
+                            <li>• Tente usar apenas parte do nome do álbum ou artista</li>
+                            <li>• Verifique a ortografia dos termos de busca</li>
+                            <li>• Use os filtros de gênero e ano para refinar os resultados</li>
+                            <li>• Experimente buscar por gêneros como "Rock", "Pop" ou "Grunge"</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
